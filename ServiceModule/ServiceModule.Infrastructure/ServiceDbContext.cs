@@ -5,6 +5,7 @@ using System.ComponentModel;
 namespace ServiceModule.Infrastructure;
 public class ServiceDbContext : DbContext
 {
+    public DbSet<Service> Service { get; set; }
     public ServiceDbContext(DbContextOptions<ServiceDbContext> options) : base(options) { }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

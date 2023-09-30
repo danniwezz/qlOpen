@@ -2,7 +2,7 @@ CREATE TABLE [Discount]
 (
 [Id] BIGINT NOT NULL,
 [AssignedServiceId] BIGINT NOT NULL,
-[DiscountPercentage] INT NOT NULL,
+[Percentage] DECIMAL(3,2) NOT NULL,
 [ValidFrom] DATE NULL,
 [ValidTo] DATE NULL,
 CONSTRAINT [PK_Discount] PRIMARY KEY CLUSTERED 

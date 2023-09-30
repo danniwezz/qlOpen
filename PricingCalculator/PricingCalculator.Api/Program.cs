@@ -35,13 +35,16 @@ public static partial class WebApplicationExtensions
 
         app.UseRouting();
 
-        app.UseExceptionHandler("/Error");
-        app.UseSwagger();
-        app.UseSwaggerUI(setup =>
+        if (app.Environment.IsDevelopment())
         {
-            setup.SwaggerEndpoint($"/swagger/v1/swagger.yaml", "Version 1.0");
-            setup.RoutePrefix = string.Empty;
-        });
+            app.UseExceptionHandler("/Error");
+            app.UseSwagger();
+            app.UseSwaggerUI(setup =>
+            {
+                setup.SwaggerEndpoint($"/swagger/v1/swagger.yaml", "Version 1.0");
+                setup.RoutePrefix = string.Empty;
+            });
+        }
         
 
         app.MapGroup("api").MapGet("", () => "Hello");

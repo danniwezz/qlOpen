@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CustomerModule.Infrastructure;
 public class CustomerDbContext : DbContext
 {
-    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Customer> Customer { get; set; }
     public CustomerDbContext(DbContextOptions<CustomerDbContext> options) : base(options) { }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,6 +32,14 @@ public class CustomerDbContext : DbContext
         configurationBuilder
            .Properties<DateOnly?>()
            .HaveConversion<DateOnlyConverter>();
+
+        //So far only Percentage will have type decimal in db.
+        configurationBuilder
+           .Properties<decimal>()
+           .HavePrecision(3, 2);
+        configurationBuilder
+            .Properties<decimal?>()
+            .HavePrecision(3, 2);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

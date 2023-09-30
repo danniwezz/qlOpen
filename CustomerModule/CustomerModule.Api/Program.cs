@@ -1,8 +1,12 @@
+using CustomerModule.Api.WebApi;
 using CustomerModule.Application;
 using CustomerModule.Core;
 using CustomerModule.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Shared.Yuniql;
+using Shared.FluentValidation;
+using CustomerModule.Application.Customers;
+using Microsoft.OpenApi.Models;
 
 namespace CustomerModule.Api;
 
@@ -25,8 +29,17 @@ public static partial class Program
 
         builder.Services.AddAuthorization();
         builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+        builder.Services.AddScoped<ICustomerUnitOfWork, CustomerUnitOfWork>();
+      
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(opt =>
+        {
+            opt.SwaggerDoc("v1", new OpenApiInfo { Title = "CustomerModule.Api", Version = "v1" });
+            opt.SupportNonNullableReferenceTypes();
+            opt.UseAllOfToExtendReferenceSchemas();
+        });
+       
+		builder.Services.AddValidatingMediator(typeof(AddCustomer));
     }
 
     private static void UseMiddlewares(this WebApplication app)
@@ -34,15 +47,21 @@ public static partial class Program
         app.UseMigrations(app.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null"));
         if (app.Environment.IsDevelopment())
         {
+            app.UseExceptionHandler("/Error");
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(setup =>
+            {
+                setup.SwaggerEndpoint($"/swagger/v1/swagger.yaml", "Version 1.0");
+                setup.RoutePrefix = string.Empty;
+            });
         }
 
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
 
-        //Setup API
+        var apiGroup = app.MapGroup("");
+        apiGroup.RegisterICustomerApi();
 
         app.Run();
     }
