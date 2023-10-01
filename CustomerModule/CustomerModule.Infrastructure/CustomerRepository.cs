@@ -1,9 +1,9 @@
-﻿
-using CustomerModule.Application;
-using CustomerModule.Infrastructure;
+﻿using CustomerModule.Application;
+using CustomerModule.Core;
+using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure;
 
-namespace CustomerModule.Core;
+namespace CustomerModule.Infrastructure;
 public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
 {
 	public CustomerRepository(CustomerDbContext dbContext) : base(dbContext)

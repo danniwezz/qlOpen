@@ -23,6 +23,7 @@
     <Folder Include="Database\Migrations\_init\" />
     <Folder Include="Database\Migrations\_post\" />
     <Folder Include="Database\Migrations\_pre\" />
+    <Folder Include="WebApi\" />
   </ItemGroup>
 
 </Project>

@@ -5,20 +5,26 @@ using Microsoft.EntityFrameworkCore;
 namespace CustomerModule.Infrastructure;
 public class CustomerDbContext : DbContext
 {
-    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Customer> Customer { get; set; }
     public CustomerDbContext(DbContextOptions<CustomerDbContext> options) : base(options) { }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Customer>()
+        modelBuilder.Entity<Customer>().Property(x => x.Id).ValueGeneratedNever();
+
+         modelBuilder.Entity<Customer>()
             .OwnsMany(x => x.AssignedServices, c =>
             {
                 c.HasKey(x => x.Id);
+                c.Property(x => x.CustomerId).ValueGeneratedNever();
+                c.Property(x => x.ServiceId).ValueGeneratedNever();
                 c.WithOwner().HasForeignKey(nameof(AssignedService.CustomerId));
-                 c.OwnsMany(x => x.Discounts, d =>
+                c.OwnsMany(x => x.Discounts, d =>
                 {
                     d.HasKey(x => x.Id);
+                    d.Property(x => x.Id).ValueGeneratedNever();
+                    d.Property(x => x.AssignedServiceId).ValueGeneratedNever();
                     d.WithOwner().HasForeignKey(nameof(Discount.AssignedServiceId));
                 });
             });
@@ -32,6 +38,14 @@ public class CustomerDbContext : DbContext
         configurationBuilder
            .Properties<DateOnly?>()
            .HaveConversion<DateOnlyConverter>();
+
+        //So far only Percentage will have type decimal in db.
+        configurationBuilder
+           .Properties<decimal>()
+           .HavePrecision(3, 2);
+        configurationBuilder
+            .Properties<decimal?>()
+            .HavePrecision(3, 2);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

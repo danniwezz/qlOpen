@@ -2,7 +2,7 @@ CREATE TABLE [Discount]
 (
 [Id] BIGINT NOT NULL,
 [AssignedServiceId] BIGINT NOT NULL,
-[DiscountPercentage] INT NOT NULL,
+[Percentage] DECIMAL(3,2) NOT NULL,
 [ValidFrom] DATE NULL,
 [ValidTo] DATE NULL,
 CONSTRAINT [PK_Discount] PRIMARY KEY CLUSTERED 
@@ -12,6 +12,8 @@ CONSTRAINT [PK_Discount] PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 
 
-ALTER TABLE [Discount] ADD CONSTRAINT [FK_AssignedServiceId_AssignedService] FOREIGN KEY ([AssignedServiceId]) REFERENCES [AssignedService](Id)
+ALTER TABLE [Discount]  WITH CHECK ADD CONSTRAINT [FK_AssignedServiceId_AssignedService] FOREIGN KEY ([AssignedServiceId]) REFERENCES [AssignedService](Id)
+
+ALTER TABLE [Discount] CHECK CONSTRAINT [FK_AssignedServiceId_AssignedService]
 
 

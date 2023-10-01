@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Shared.Core\Shared.Core.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.FluentValidation\Shared.FluentValidation.csproj" />
     <ProjectReference Include="..\CustomerModule.Core\CustomerModule.Core.csproj" />
   </ItemGroup>
 

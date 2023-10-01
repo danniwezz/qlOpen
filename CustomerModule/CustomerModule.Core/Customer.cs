@@ -3,46 +3,49 @@
 namespace CustomerModule.Core;
 public class Customer
 {
-	public static Customer Create(string name, long serviceId)
+	public static Customer Create(string name)
 	{
 		return new Customer
 		{
 			Id = IdGenerator.NewId(),
 			Name = name,
-			ServiceId = serviceId
 		};
 	}
 
-	public static Customer Create(long id, string name, long serviceId, List<AssignedService> assignedServices)
+	public static Customer Load(long id, string name, List<AssignedService> assignedServices)
 	{
 		return new Customer
 		{
 			Id = id,
 			Name = name,
-			ServiceId = serviceId,
 			AssignedServices = assignedServices
 		};
 	}
 
 	public void AddAssignedService(AssignedService assignedService)
 	{
-		if (assignedService != null && !AssignedServices.Select(x => x.Id).Contains(assignedService.Id))
+		if (assignedService != null || !AssignedServices.Select(x => x.Id).Contains(assignedService.Id))
 		{
 			AssignedServices.Add(assignedService);
+			return;
 		}
+		throw new Exception("Assigned service is null or already exist.");
 	}
 
-	public void AddDiscount(long assignedServiceId, Discount discount)
+	public void AddDiscount(Discount discount)
 	{
-		if (discount != null && !AssignedServices.Single(x => x.Id == assignedServiceId).Discounts.Select(x => x.Id).Contains(discount.Id))
+		var assignedService = AssignedServices.Single(x => x.Id == discount.AssignedServiceId);
+		if (discount == null || assignedService.Discounts.Select(x => x.Id).Contains(discount.Id))
 		{
-			AssignedServices.Single(x => x.Id == assignedServiceId).Discounts.Add(discount);
+			throw new Exception("Discount is null or already exist.");
+
 		}
+
+		AssignedServices.Single(x => x.Id == discount.AssignedServiceId).Discounts.Add(discount);
 	}
 
 	public long Id { get; set; }
 	public string Name { get; set; } = null!;
-	public long ServiceId { get; set; }
 	public ICollection<AssignedService> AssignedServices { get; set; } = new HashSet<AssignedService>();
 
 }
