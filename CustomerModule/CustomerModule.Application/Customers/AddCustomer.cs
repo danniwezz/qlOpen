@@ -1,7 +1,6 @@
 ﻿using CustomerModule.Core;
 using FluentValidation;
 using MediatR;
-using System.ComponentModel.DataAnnotations;
 
 namespace CustomerModule.Application.Customers;
 public class AddCustomer

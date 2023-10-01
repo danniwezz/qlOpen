@@ -1,7 +1,6 @@
-﻿
-using Shared.Core;
+﻿using Shared.Core;
 
-namespace ServiceModule.Application;
+namespace ServiceModule.Core;
 public interface IServiceRepository : IBaseRepository<Service>
 {
 }

@@ -1,5 +1,4 @@
-﻿using CustomerModule.Application;
-using CustomerModule.Core;
+﻿using CustomerModule.Core;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure;
 

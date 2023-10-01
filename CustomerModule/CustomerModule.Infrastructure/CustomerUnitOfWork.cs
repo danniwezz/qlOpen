@@ -1,4 +1,4 @@
-﻿using CustomerModule.Application;
+﻿using CustomerModule.Core;
 
 namespace CustomerModule.Infrastructure;
 public class CustomerUnitOfWork : ICustomerUnitOfWork

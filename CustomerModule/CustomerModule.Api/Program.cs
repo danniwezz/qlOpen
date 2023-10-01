@@ -1,5 +1,4 @@
 using CustomerModule.Api.WebApi;
-using CustomerModule.Application;
 using CustomerModule.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Shared.Yuniql;
@@ -7,6 +6,7 @@ using Shared.FluentValidation;
 using CustomerModule.Application.Customers;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Diagnostics;
+using CustomerModule.Core;
 
 namespace CustomerModule.Api;
 
