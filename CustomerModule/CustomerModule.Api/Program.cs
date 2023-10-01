@@ -1,12 +1,12 @@
 using CustomerModule.Api.WebApi;
 using CustomerModule.Application;
-using CustomerModule.Core;
 using CustomerModule.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Shared.Yuniql;
 using Shared.FluentValidation;
 using CustomerModule.Application.Customers;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace CustomerModule.Api;
 
@@ -47,7 +47,16 @@ public static partial class Program
         app.UseMigrations(app.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null"));
         if (app.Environment.IsDevelopment())
         {
-            app.UseExceptionHandler("/Error");
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+
+                    await context.Response.WriteAsJsonAsync(new { contextFeature?.Error.Message });
+                    await context.Response.CompleteAsync();
+                });
+            }); 
             app.UseSwagger();
             app.UseSwaggerUI(setup =>
             {

@@ -11,14 +11,20 @@ public class CustomerDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Customer>()
+        modelBuilder.Entity<Customer>().Property(x => x.Id).ValueGeneratedNever();
+
+         modelBuilder.Entity<Customer>()
             .OwnsMany(x => x.AssignedServices, c =>
             {
                 c.HasKey(x => x.Id);
+                c.Property(x => x.CustomerId).ValueGeneratedNever();
+                c.Property(x => x.ServiceId).ValueGeneratedNever();
                 c.WithOwner().HasForeignKey(nameof(AssignedService.CustomerId));
-                 c.OwnsMany(x => x.Discounts, d =>
+                c.OwnsMany(x => x.Discounts, d =>
                 {
                     d.HasKey(x => x.Id);
+                    d.Property(x => x.Id).ValueGeneratedNever();
+                    d.Property(x => x.AssignedServiceId).ValueGeneratedNever();
                     d.WithOwner().HasForeignKey(nameof(Discount.AssignedServiceId));
                 });
             });
