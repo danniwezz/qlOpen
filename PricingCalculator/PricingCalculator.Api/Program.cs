@@ -1,4 +1,7 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using PricingCalculator.Core;
+using PricingCalculator.Infrastructure.CustomerModuleClient;
 
 namespace PricingCalculator.Api;
 
@@ -8,7 +11,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.ConfigureServices();
+        builder.ConfigureServices();
         var app = builder.Build();
         app.UseMiddlewares();
         app.Run();
@@ -17,16 +20,20 @@ public class Program
 
 public static partial class WebApplicationExtensions
 {
-    public static IServiceCollection ConfigureServices(this IServiceCollection services)
+    public static IServiceCollection ConfigureServices(this WebApplicationBuilder builder)
     {
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(opt =>
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc("v1", new OpenApiInfo { Title = "PricingCalculator", Version = "v1" });
             opt.SupportNonNullableReferenceTypes();
             opt.UseAllOfToExtendReferenceSchemas();
         });
-        return services;
+        builder.Services.AddOptions<CustomerModuleClientOptions>().Bind(builder.Configuration.GetSection(nameof(CustomerModuleClientOptions))).ValidateDataAnnotations().ValidateOnStart();
+        builder.Services.AddHttpClient<ICustomerModuleClient, CustomerModuleClient>();
+
+
+        return builder.Services;
     }
 
     public static WebApplication UseMiddlewares(this WebApplication app)
