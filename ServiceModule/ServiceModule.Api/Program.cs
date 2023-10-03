@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using ServiceModule.Application;
+using ServiceModule.Api.WebApi;
+using ServiceModule.Application.Service;
+using ServiceModule.Core;
 using ServiceModule.Infrastructure;
+using Shared.FluentValidation;
 using Shared.Yuniql;
 
 namespace ServiceModule.Api;
@@ -30,6 +34,7 @@ public static partial class Program
         builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
         builder.Services.AddScoped<IServiceUnitOfWork, ServiceUnitOfWork>();
 
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(opt =>
         {
@@ -37,6 +42,9 @@ public static partial class Program
             opt.SupportNonNullableReferenceTypes();
             opt.UseAllOfToExtendReferenceSchemas();
         });
+
+        builder.Services.AddValidatingMediator(typeof(AddService));
+
     }
 
     private static void UseMiddlewares(this WebApplication app)
@@ -45,7 +53,16 @@ public static partial class Program
         
         if (app.Environment.IsDevelopment())
         {
-            app.UseExceptionHandler("/Error");
+           app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+
+                    await context.Response.WriteAsJsonAsync(new { contextFeature?.Error.Message });
+                    await context.Response.CompleteAsync();
+                });
+            }); 
             app.UseSwagger();
             app.UseSwaggerUI(setup =>
             {
@@ -58,7 +75,9 @@ public static partial class Program
 
         app.UseAuthorization();
 
-        //Setup API
+        var apiGroup = app.MapGroup("").WithOpenApi().AddEndpointFilter<VariousExceptionsFilter>();
+        apiGroup.RegisterServiceApi();
+
 
         app.Run();
     }

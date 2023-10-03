@@ -1,19 +1,36 @@
 ﻿using CustomerModule.Core;
 using FluentValidation;
 using MediatR;
-using System.ComponentModel.DataAnnotations;
 
 namespace CustomerModule.Application.Customers;
 public class AddCustomer
 {
 	public record Request(string Name, List<AssignedServiceDto> AssignedServices, List<DiscountDto> Discounts) : IRequest;
 
-
 	public class Validator : AbstractValidator<Request>
 	{
-        public Validator()
+        public Validator(ICustomerRepository customerRepository)
         {
-            
+            RuleFor(x => x.Name).NotEmpty();
+			RuleFor(x => x.Name).MustAsync(async (name, ct) => await customerRepository.FirstOrDefaultAsync(x => x.Name == name, ct) == null).WithMessage(x => $"A customer with name: {x.Name} already exist.");
+			RuleFor(x => x.AssignedServices).Must(services => services.Select(s => s.ServiceId).Distinct().Count() != services.Count).WithMessage("A serviceId can only be assigned once per customer.");
+			RuleFor(x => x.AssignedServices).Must(services => services.Select(s => s.ServiceName).Distinct().Count() != services.Count).WithMessage("A serviceName can only be assigned once per customer.");
+			RuleForEach(x => x.Discounts).Must(discount => discount.ValidFrom < discount.ValidTo).WithMessage(x => $"ValidFrom must be before ValidTo");
+			RuleFor(x => x.Discounts).Must(discounts =>
+			{
+				foreach (var discount in discounts)
+				{
+					if (!discounts.Where(x => x != discount).Any(other => (discount.ValidFrom < other.ValidFrom && other.ValidFrom < discount.ValidFrom ) //The "other discount"s startDate is contained in the "discount"s period
+					|| (other.ValidFrom < discount.ValidFrom && other.ValidTo > discount.ValidFrom )							//The "discount"s startDate is contained in the "other discount"s period
+					|| (other.ValidFrom < discount.ValidFrom && discount.ValidTo < other.ValidTo)								//The "discounts" period is contained in the "other discount"s period
+					|| (discount.ValidFrom < other.ValidFrom && other.ValidTo < discount.ValidTo)								//The "other discount"s period is contained in the discounts period
+					))
+					{
+						return false;
+					}
+				}
+				return true;
+			}).WithMessage("Periods can not overlap.");
         }
     }
 

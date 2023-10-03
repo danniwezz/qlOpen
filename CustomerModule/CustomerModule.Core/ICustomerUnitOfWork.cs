@@ -1,4 +1,4 @@
-﻿namespace CustomerModule.Application;
+﻿namespace CustomerModule.Core;
 public interface ICustomerUnitOfWork
 {
 	Task SaveChangesAsync(CancellationToken cancellationToken);

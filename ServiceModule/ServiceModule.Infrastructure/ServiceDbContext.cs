@@ -1,6 +1,5 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore;
+using ServiceModule.Core;
 
 namespace ServiceModule.Infrastructure;
 public class ServiceDbContext : DbContext
