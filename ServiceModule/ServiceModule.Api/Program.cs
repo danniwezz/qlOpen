@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using ServiceModule.Api.WebApi;
@@ -52,7 +53,16 @@ public static partial class Program
         
         if (app.Environment.IsDevelopment())
         {
-            app.UseExceptionHandler("/Error");
+           app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+
+                    await context.Response.WriteAsJsonAsync(new { contextFeature?.Error.Message });
+                    await context.Response.CompleteAsync();
+                });
+            }); 
             app.UseSwagger();
             app.UseSwaggerUI(setup =>
             {
@@ -65,7 +75,7 @@ public static partial class Program
 
         app.UseAuthorization();
 
-        var apiGroup = app.MapGroup("");
+        var apiGroup = app.MapGroup("").WithOpenApi().AddEndpointFilter<VariousExceptionsFilter>();
         apiGroup.RegisterServiceApi();
 
 
