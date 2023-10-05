@@ -20,4 +20,6 @@ public class Service
     public string Name { get; set; } = null!;
     public decimal Price { get; set; }
     public string Currency { get; set; } = null!;
+    public int ValidFromWeekDayNumber { get; set; }
+    public int ValidToWeekDayNumber { get; set; }
 }

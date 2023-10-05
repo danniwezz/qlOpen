@@ -4,5 +4,5 @@ namespace PricingCalculator.Core;
 
 public interface ICustomerModuleClient
 {
-	Task<CustomerDto> GetCustomer(string customerId);
+	Task<CustomerDto?> GetCustomer(long customerId);
 }

@@ -75,7 +75,7 @@ public static partial class Program
 
         app.UseAuthorization();
 
-        var apiGroup = app.MapGroup("").WithOpenApi().AddEndpointFilter<VariousExceptionsFilter>();
+        var apiGroup = app.MapGroup("").WithOpenApi();
         apiGroup.RegisterServiceApi();
 
 

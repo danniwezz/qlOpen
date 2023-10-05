@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using ServiceModule.Application.Service;
 using ServiceModule.Core;
+using ServiceModule.Public;
 using Shared.Core;
 using Shared.FluentValidation;
 
@@ -17,8 +18,9 @@ public static class ServiceApi
 		group.MapGet("", GetServices);
 	}
 
-	private static async Task<Results<Ok, UnprocessableEntity<IEnumerable<IError>>>> AddService(IMediator mediator, AddService.Request request, IServiceRepository serviceRepository)
+	private static async Task<Results<Ok, UnprocessableEntity<IEnumerable<IError>>>> AddService(IMediator mediator, AddServiceRequestDto requestDto, IServiceRepository serviceRepository)
 	{
+		var request = new AddService.Request(requestDto.Name, requestDto.Price, requestDto.Currency, requestDto.ValidFromWeekDayNumber, requestDto.ValidFromWeekDayNumber);
 		var validator = new AddService.Validator(serviceRepository);
 		var validationResult = await validator.ValidateAsync(request);
 		if (!validationResult.IsValid)

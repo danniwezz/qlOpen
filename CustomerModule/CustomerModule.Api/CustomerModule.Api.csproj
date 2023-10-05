@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Database\Migrations\v0.03\" />
     <Folder Include="Database\Migrations\v0.01\" />
     <Folder Include="Database\Migrations\_draft\" />
     <Folder Include="Database\Migrations\_post\" />

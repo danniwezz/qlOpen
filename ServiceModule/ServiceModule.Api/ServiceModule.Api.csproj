@@ -16,10 +16,11 @@
     <ProjectReference Include="..\..\Shared\Shared.FluentValidation\Shared.FluentValidation.csproj" />
     <ProjectReference Include="..\..\Shared\Shared.Yuniql\Shared.Yuniql.csproj" />
     <ProjectReference Include="..\ServiceModule.Infrastructure\ServiceModule.Infrastructure.csproj" />
+    <ProjectReference Include="..\ServiceModule.Public\ServiceModule.Public.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\Migrations\v0.00\" />
+    <Folder Include="Database\Migrations\_draft\" />
     <Folder Include="Database\Migrations\_erase\" />
     <Folder Include="Database\Migrations\_init\" />
     <Folder Include="Database\Migrations\_post\" />

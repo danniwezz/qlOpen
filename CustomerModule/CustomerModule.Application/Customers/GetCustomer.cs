@@ -17,9 +17,8 @@ public class GetCustomer
 		}
         public async Task<CustomerDto> Handle(Request request, CancellationToken cancellationToken)
 		{
-			var customer = await  _customerRepository.QueryReadonlyAsync(c => c.Id  == request.CustomerId, x => x, cancellationToken);
-			//Add mapper and map the types to dtos and return result
-			throw new NotImplementedException();
+			var customer = await  _customerRepository.SingleAsync(c => c.Id  == request.CustomerId, cancellationToken);
+			return CustomerMapper.ToDto(customer);
 		}
 	}
 }

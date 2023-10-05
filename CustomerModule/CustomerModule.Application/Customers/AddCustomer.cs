@@ -5,7 +5,7 @@ using MediatR;
 namespace CustomerModule.Application.Customers;
 public class AddCustomer
 {
-	public record Request(string Name, List<AssignedServiceDto> AssignedServices, List<DiscountDto> Discounts) : IRequest;
+	public record Request(string Name, List<AssignedService> AssignedServices, List<Discount> Discounts) : IRequest;
 
 	public class Validator : AbstractValidator<Request>
 	{
@@ -16,6 +16,11 @@ public class AddCustomer
 			RuleFor(x => x.AssignedServices).Must(services => services.Select(s => s.ServiceId).Distinct().Count() != services.Count).WithMessage("A serviceId can only be assigned once per customer.");
 			RuleFor(x => x.AssignedServices).Must(services => services.Select(s => s.ServiceName).Distinct().Count() != services.Count).WithMessage("A serviceName can only be assigned once per customer.");
 			RuleForEach(x => x.Discounts).Must(discount => discount.ValidFrom < discount.ValidTo).WithMessage(x => $"ValidFrom must be before ValidTo");
+			//Check if every discount has a start and an end date or nothing. Else throw error
+			RuleFor(x => x.Discounts).Must(discounts =>
+			{
+				return false;
+			}).WithMessage("If a discount with no startDate or endDate exist, then there should only exist one discount.")
 			RuleFor(x => x.Discounts).Must(discounts =>
 			{
 				foreach (var discount in discounts)
@@ -52,7 +57,7 @@ public class AddCustomer
 				var assignedService = AssignedService.Create(assignedServiceDto.ServiceId, assignedServiceDto.ServiceName, customer.Id);
 				customer.AddAssignedService(assignedService);
 
-				foreach (var discount in request.Discounts.Where(x => x.ServiceId == assignedService.ServiceId))
+				foreach (var discount in request.Discounts.Where(x => x.AssignedServiceId == assignedService.Id))
 				{
 					customer.AddDiscount(Discount.Create(assignedService.Id, discount.Percentage, discount.ValidFrom, discount.ValidTo));
 				}
@@ -63,7 +68,3 @@ public class AddCustomer
 		}
 	}
 }
-
-public record AddCustomerRequestDto(string Name, List<AssignedServiceDto> AssignedServices, List<DiscountDto> Discounts);
-public record AssignedServiceDto(long ServiceId, string ServiceName);
-public record DiscountDto(long ServiceId, decimal Percentage, DateOnly? ValidFrom, DateOnly? ValidTo);
