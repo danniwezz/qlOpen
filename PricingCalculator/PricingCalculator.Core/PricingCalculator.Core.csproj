@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\CustomerModule\CustomerModule.Public\CustomerModule.Public.csproj" />
-    <ProjectReference Include="..\..\ServiceModule\ServiceModule.Public\ServiceModule.Public.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\CustomerModule\CustomerModule.Public\CustomerModule.Public.csproj" />
+		<ProjectReference Include="..\..\ServiceModule\ServiceModule.Public\ServiceModule.Public.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using ServiceModule.Application.Service;
 using ServiceModule.Core;
 using ServiceModule.Public;
@@ -12,23 +13,23 @@ public static class ServiceApi
 {
 	public static void RegisterServiceApi(this RouteGroupBuilder apiGroup)
 	{
-		var group = apiGroup.MapGroup("service");
+		var group = apiGroup.MapGroup("service").WithOpenApi();
 
 		group.MapPost("", AddService);
 		group.MapGet("", GetServices);
 	}
 
-	private static async Task<Results<Ok, UnprocessableEntity<IEnumerable<IError>>>> AddService(IMediator mediator, AddServiceRequestDto requestDto, IServiceRepository serviceRepository)
+	private static async Task<Results<Ok<long>, UnprocessableEntity<IEnumerable<IError>>>> AddService(IMediator mediator, AddServiceRequestDto requestDto, IServiceRepository serviceRepository)
 	{
-		var request = new AddService.Request(requestDto.Name, requestDto.Price, requestDto.Currency, requestDto.ValidFromWeekDayNumber, requestDto.ValidFromWeekDayNumber);
+		var request = new AddService.Request(requestDto.Name, requestDto.Price, requestDto.Currency, requestDto.ValidFromWeekDayNumber, requestDto.ValidToWeekDayNumber);
 		var validator = new AddService.Validator(serviceRepository);
 		var validationResult = await validator.ValidateAsync(request);
 		if (!validationResult.IsValid)
 		{
 			return TypedResults.UnprocessableEntity(validationResult.ToFailureResult());
 		}
-		await mediator.Send(request);
-		return TypedResults.Ok();
+		var serviceId = await mediator.Send(request);
+		return TypedResults.Ok(serviceId);
 	}
 
 	private static async Task<Ok<List<ServiceModule.Core.Service>>> GetServices(IMediator mediator)

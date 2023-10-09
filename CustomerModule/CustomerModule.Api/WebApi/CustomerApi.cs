@@ -22,19 +22,19 @@ public static class CustomerApi
 		group.MapGet("/{customerId}", GetCustomer);
 	}
 
-	private static async Task<Results<Ok, UnprocessableEntity<IEnumerable<IError>>>> AddCustomer(
+	private static async Task<Results<Ok<long>, UnprocessableEntity<IEnumerable<IError>>>> AddCustomer(
 		IMediator mediator,
 		[FromBody] AddCustomerRequestDto requestDto,
 		ICustomerRepository customerRepository)
 	{
-		var request = CustomerRequstMapper.FromDto(requestDto);
+		var request = CustomerRequestMapper.FromDto(requestDto);
 		var validationResult = await new AddCustomer.Validator(customerRepository).ValidateAsync(request);
 		if (!validationResult.IsValid)
 		{
 			return TypedResults.UnprocessableEntity(validationResult.ToFailureResult());
 		}
-		await mediator.Send(request);
-		return TypedResults.Ok();
+		var customerId = await mediator.Send(request);
+		return TypedResults.Ok(customerId);
 	}
 
 	private static async Task<Ok<CustomerDto>> GetCustomer(

@@ -14,7 +14,7 @@ public static class ApplicationBuilderMigrationExtensions
     /// <param name="this"></param>
     /// <param name="sqlConnectionString"></param>
     /// <returns></returns>
-    public static WebApplication UseMigrations(this WebApplication @this, string sqlConnectionString)
+    public static WebApplication UseMigrations(this WebApplication @this, string sqlConnectionString, string? currentDirectory = null)
     {
         var traceService = new ConsoleTraceService { IsDebugEnabled = true };
         var dataService = new SqlServerDataService(traceService);
@@ -23,7 +23,7 @@ public static class ApplicationBuilderMigrationExtensions
         @this.UseYuniql(dataService, bulkService, traceService, new Configuration
         {
             Platform = "sqlserver",
-            Workspace = Path.Combine(Environment.CurrentDirectory, "Database", "Migrations"),
+            Workspace = Path.Combine(currentDirectory ?? Environment.CurrentDirectory, "Database", "Migrations"),
             ConnectionString = sqlConnectionString,
             IsAutoCreateDatabase = @this.Environment.IsDevelopment(),
             IsDebug = true

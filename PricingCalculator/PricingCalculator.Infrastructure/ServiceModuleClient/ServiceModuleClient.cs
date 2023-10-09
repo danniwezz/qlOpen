@@ -19,9 +19,10 @@ public class ServiceModuleClient : IServiceModuleClient
 		};
 	}
 
-    public async Task AddService(AddServiceRequestDto request)
+    public async Task<long> AddService(AddServiceRequestDto request)
 	{
-		await _httpClient.PostAsJsonAsync<AddServiceRequestDto>("service", request);
+		var result = await _httpClient.PostAsJsonAsync<AddServiceRequestDto>("service", request);
+		return await result.Content.ReadFromJsonAsync<long>();
 	}
 
 	public async Task<List<ServiceDto>?> GetServices()

@@ -1,5 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using PricingCalculator.Api.WebApi;
+using PricingCalculator.Application;
 using PricingCalculator.Core;
 using PricingCalculator.Infrastructure.CustomerModuleClient;
 
@@ -22,6 +24,7 @@ public static partial class WebApplicationExtensions
 {
     public static IServiceCollection ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddScoped<IPriceCalculatorService, PriceCalculatorService>();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(opt =>
         {
@@ -32,7 +35,7 @@ public static partial class WebApplicationExtensions
         builder.Services.AddOptions<CustomerModuleClientOptions>().Bind(builder.Configuration.GetSection(nameof(CustomerModuleClientOptions))).ValidateDataAnnotations().ValidateOnStart();
         builder.Services.AddHttpClient<ICustomerModuleClient, CustomerModuleClient>();
 
-
+        builder.Services.AddScoped<ICustomerModuleClient, CustomerModuleClient>();
         return builder.Services;
     }
 
@@ -54,7 +57,8 @@ public static partial class WebApplicationExtensions
         }
         
 
-        app.MapGroup("api").MapGet("", () => "Hello");
+        var apiGroup = app.MapGroup("");
+        apiGroup.RegisterPriceCalculatorApi();
         return app;
     }
 }

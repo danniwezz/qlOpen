@@ -32,18 +32,6 @@ public class Customer
 		throw new Exception("Assigned service is null or already exist.");
 	}
 
-	public void AddDiscount(Discount discount)
-	{
-		var assignedService = AssignedServices.Single(x => x.Id == discount.AssignedServiceId);
-		if (discount == null || assignedService.Discounts.Select(x => x.Id).Contains(discount.Id))
-		{
-			throw new Exception("Discount is null or already exist.");
-
-		}
-
-		AssignedServices.Single(x => x.Id == discount.AssignedServiceId).Discounts.Add(discount);
-	}
-
 	public long Id { get; set; }
 	public string Name { get; set; } = null!;
 	public ICollection<AssignedService> AssignedServices { get; set; } = new HashSet<AssignedService>();

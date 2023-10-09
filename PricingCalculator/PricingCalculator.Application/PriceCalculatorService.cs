@@ -31,9 +31,9 @@ public class PriceCalculatorService : IPriceCalculatorService
 	private int GetDaysWithCost(DateOnly startDate, DateOnly endDate, int validFromWeekDayNumber, int validToWeekDayNumber)
 	{
 		var totalDays = 0;
-		for(var date = startDate; startDate < endDate; date.AddDays(1))
+		for(var date = startDate; date < endDate; date = date.AddDays(1))
 		{
-			if(validFromWeekDayNumber <= (int)date.DayOfWeek && validToWeekDayNumber <= (int)date.DayOfWeek)
+			if((int)date.DayOfWeek >= validFromWeekDayNumber && (int)date.DayOfWeek <= validToWeekDayNumber)
 			{
 				totalDays++;
 			}
