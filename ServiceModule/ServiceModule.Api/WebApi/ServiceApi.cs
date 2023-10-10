@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using ServiceModule.Application.Service;
 using ServiceModule.Core;
 using ServiceModule.Public;
@@ -32,7 +31,7 @@ public static class ServiceApi
 		return TypedResults.Ok(serviceId);
 	}
 
-	private static async Task<Ok<List<ServiceModule.Core.Service>>> GetServices(IMediator mediator)
+	private static async Task<Ok<List<Service>>> GetServices(IMediator mediator)
 	{
 		var services = await mediator.Send(new GetServices.Request());
 		return TypedResults.Ok(services);

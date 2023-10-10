@@ -21,11 +21,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Database\Migrations\_draft\" />
-		<Folder Include="Database\Migrations\_erase\" />
-		<Folder Include="Database\Migrations\_init\" />
-		<Folder Include="Database\Migrations\_post\" />
-		<Folder Include="Database\Migrations\_pre\" />
+	  <None Update="Database\ServiceMigrations\v0.00\01.AddServiceTable.sql">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Database\ServiceMigrations\_draft\readme.md">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Database\ServiceMigrations\_erase\readme.md">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Database\ServiceMigrations\_init\readme.md">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Database\ServiceMigrations\_post\readme.md">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Database\ServiceMigrations\_pre\readme.md">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

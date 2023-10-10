@@ -51,7 +51,7 @@ public static partial class WebApplicationExtensions
     {
         var assembly = typeof(Program).GetTypeInfo().Assembly;
         var c = assembly.Location.Replace($"{assembly.GetName().Name}.dll", "");
-        app.UseMigrations(app.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null"), assembly.Location.Replace(assembly.FullName, ""));
+        app.UseMigrations(app.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null"), "CustomerMigrations");
         if (app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler(errorApp =>

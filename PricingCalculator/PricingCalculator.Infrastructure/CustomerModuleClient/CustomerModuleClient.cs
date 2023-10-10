@@ -18,13 +18,8 @@ public partial class CustomerModuleClient : ICustomerModuleClient
 		};
 	}
 
-	public async Task<CustomerDto?> GetCustomer(long customerId)
-	{
-		return await _httpClient.GetFromJsonAsync<CustomerDto>($"customer/{customerId}");
-	}
+	public async Task<CustomerDto?> GetCustomer(long customerId) =>  await _httpClient.GetFromJsonAsync<CustomerDto>($"customer/{customerId}");
 
-	public async Task AddCustomer(CustomerDto customerDto)
-	{
-		await _httpClient.PostAsJsonAsync("customer", customerDto);
-	}
+	public async Task AddCustomer(CustomerDto customerDto) => await _httpClient.PostAsJsonAsync("customer", customerDto);
+
 }

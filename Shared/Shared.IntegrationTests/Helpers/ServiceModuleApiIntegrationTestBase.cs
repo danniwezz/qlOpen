@@ -17,7 +17,7 @@ public class ServiceModuleApiIntegrationTestBase : IClassFixture<TestWebApplicat
 
 	public HttpClient GetHttpClient()
 	{
-		return _factory.CreateDefaultClient();
+		return _factory.CreateDefaultClient(new Uri("https://localhost:7109/"));
 	}
 
 	public Task DisposeAsync()

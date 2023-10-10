@@ -1844,6 +1844,7 @@
           "Microsoft.AspNetCore.OpenApi": "[7.0.11, )",
           "PricingCalculator.Application": "[1.0.0, )",
           "PricingCalculator.Infrastructure": "[1.0.0, )",
+          "PricingCalculator.Public": "[1.0.0, )",
           "Swashbuckle.AspNetCore": "[6.5.0, )",
           "Swashbuckle.AspNetCore.SwaggerGen": "[6.5.0, )"
         }
@@ -1867,6 +1868,9 @@
           "Microsoft.EntityFrameworkCore": "[7.0.11, )",
           "PricingCalculator.Core": "[1.0.0, )"
         }
+      },
+      "pricingcalculator.public": {
+        "type": "Project"
       },
       "servicemodule.api": {
         "type": "Project",

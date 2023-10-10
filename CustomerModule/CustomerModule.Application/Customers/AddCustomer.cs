@@ -31,14 +31,14 @@ public class AddCustomer
 			{
 				foreach (var discount in service.Discounts)
 				{
-					if (!(discount.ValidFrom == null && discount.ValidTo == null) && !(discount.ValidFrom != null && discount.ValidTo != null))
+					if (discount.ValidFrom == null && discount.ValidTo != null)
 					{
 						return false;
 					}
 				}
 				return true;
 
-			}).WithMessage(x => "ValidFrom and ValidTo must either both be null or both have values.");
+			}).WithMessage(x => "ValidFrom must have a value, if ValidTo has a value.");
 			RuleForEach(x => x.AssignedServices).Must(service =>
 			{
 				if (service.Discounts.Any(x => x.ValidFrom == null && x.ValidTo == null) && service.Discounts.Count > 1)
@@ -50,7 +50,8 @@ public class AddCustomer
 			}).WithMessage("If a discount with no startDate or endDate exist, then there should only exist one discount.");
 			RuleForEach(x => x.AssignedServices).Must(service =>
 			{
-				foreach (var discount in service.Discounts)
+				//TODO: Does not work as intended
+				foreach (var discount in service.Discounts.Where(x => !(x.ValidFrom == null && x.ValidTo == null) || !(x.ValidFrom != null && x.ValidTo == null)))
 				{
 					if (service.Discounts.Count >= 2 && !service.Discounts.Where(x => x != discount).Any(other => (discount.ValidFrom < other.ValidFrom && other.ValidFrom < discount.ValidFrom) //The "other discount"s startDate is contained in the "discount"s period
 					|| (other.ValidFrom < discount.ValidFrom && other.ValidTo > discount.ValidFrom)                         //The "discount"s startDate is contained in the "other discount"s period

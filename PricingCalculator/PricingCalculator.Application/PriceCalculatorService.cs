@@ -4,17 +4,20 @@ namespace PricingCalculator.Application;
 
 public class PriceCalculatorService : IPriceCalculatorService
 {
-	public List<ServiceCost> CalculateCustomerCost(CustomerDto customer)
+	public List<ServiceCost> CalculateCustomerCost(CustomerDto customer, DateOnly? calculateUntil = null)
 	{
 		var costPerService = new List<ServiceCost>();
 		foreach (var service in customer.AssignedServices)
 		{
 			//Get the total number of days the customer has had the service
-			var daysWithCost = GetDaysWithCost(service.StartDate, service.EndDate ?? DateOnly.FromDateTime(DateTime.UtcNow), service.ValidFromWeekDayNumber, service.ValidToWeekDayNumber);
-			var discountCosts = service.Discounts.Select(discount =>
+			var daysWithCost = GetDaysWithCost(service.StartDate, calculateUntil ?? service.EndDate ?? DateOnly.FromDateTime(DateTime.UtcNow), service.ValidFromWeekDayNumber, service.ValidToWeekDayNumber);
+			//We need to ignore the discounts that start later than the date we are calculating the costs until
+			var discountCosts = service.Discounts.Where(x => x.ValidFrom < calculateUntil).Select(discount =>
 			{
 				//Get the total number of days the customer has had the discount on the service
-				var discountedDaysWithCost = GetDaysWithCost(discount.ValidFrom ?? service.StartDate, discount.ValidTo ?? service.EndDate ?? DateOnly.FromDateTime(DateTime.UtcNow), service.ValidFromWeekDayNumber, service.ValidToWeekDayNumber);
+				var startDate = discount.ValidFrom ?? service.StartDate;
+				var endDate = discount.ValidTo ?? service.EndDate ?? DateOnly.FromDateTime(DateTime.UtcNow);
+				var discountedDaysWithCost = GetDaysWithCost(startDate, calculateUntil.HasValue && calculateUntil.Value < endDate ? calculateUntil.Value : endDate, service.ValidFromWeekDayNumber, service.ValidToWeekDayNumber);
 				return new {Cost = discountedDaysWithCost * service.Price * discount.Percentage, NumberOfDays = discountedDaysWithCost};
 			});
 			var totalDiscountedDaysWithCost = discountCosts.Sum(x => x.NumberOfDays);
@@ -46,5 +49,5 @@ public record ServiceCost(string ServiceName, decimal TotalCost);
 
 public interface IPriceCalculatorService
 {
-	List<ServiceCost> CalculateCustomerCost(CustomerDto customer);
+	List<ServiceCost> CalculateCustomerCost(CustomerDto customer, DateOnly? calculateUntil);
 }

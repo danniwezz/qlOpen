@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PricingCalculator.Application;
 using PricingCalculator.Core;
+using PricingCalculator.Public;
 
 namespace PricingCalculator.Api.WebApi;
 
@@ -14,17 +15,18 @@ public static class PriceCalculatorApi
 		group.MapGet("/{customerId}", GetPriceForCustomer);
 	}
 
-	private static async Task<Results<Ok<List<ServiceCost>>, UnprocessableEntity<string>>> GetPriceForCustomer(
+	private static async Task<Results<Ok<List<ServiceCostDto>>, UnprocessableEntity<string>>> GetPriceForCustomer(
 		ICustomerModuleClient customerModuleClient, 
 		IPriceCalculatorService priceCalculatorService,
-		[FromRoute] long customerId)
+		[FromRoute] long customerId,
+		[FromQuery] DateOnly? calculateUntilDate)
 	{
 		var customer = await customerModuleClient.GetCustomer(customerId);
 		if(customer == null)
 		{
 			return TypedResults.UnprocessableEntity($"Could not find customer with id: {customerId}.");
 		}
-		var serviceCost = priceCalculatorService.CalculateCustomerCost(customer);
-		return TypedResults.Ok(serviceCost);
+		var serviceCost = priceCalculatorService.CalculateCustomerCost(customer, calculateUntilDate);
+		return TypedResults.Ok(serviceCost.Select(x => new ServiceCostDto(x.ServiceName, x.TotalCost)).ToList());
 	}
 }

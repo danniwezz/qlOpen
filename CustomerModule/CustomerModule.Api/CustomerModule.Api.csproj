@@ -16,17 +16,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Database\Migrations\_draft\" />
-		<Folder Include="Database\Migrations\_post\" />
-		<Folder Include="Database\Migrations\_pre\" />
-		<Folder Include="Database\Migrations\_erase\" />
-		<Folder Include="Database\Migrations\_init\" />
-		<Folder Include="Database\Migrations\v0.01\" />
-		<Folder Include="Database\Migrations\v0.02\" />
-		<Folder Include="Database\Migrations\v0.03\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Shared.FluentValidation\Shared.FluentValidation.csproj" />
 		<ProjectReference Include="..\..\Shared\Shared.Yuniql\Shared.Yuniql.csproj" />
 		<ProjectReference Include="..\CustomerModule.Application\CustomerModule.Application.csproj" />
@@ -34,14 +23,38 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Database\Migrations\v0.00\01.AddCustomerTable.sql">
+		<None Update="Database\CustomerMigrations\v0.00\01.AddCustomerTable.sql">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Database\Migrations\v0.00\02.AddAssignedServiceTable.sql">
+		<None Update="Database\CustomerMigrations\v0.00\02.AddAssignedServiceTable.sql">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Database\Migrations\v0.00\03.AddDiscountTable.sql">
+		<None Update="Database\CustomerMigrations\v0.00\03.AddDiscountTable.sql">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\v0.01\01.AddUniqueConstraintsCustomer.sql">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\v0.02\01.AddUniqueConstraintsCustomer.sql">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\v0.03\01.AddWeekDaysToAssignedServiceTable.sql">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\_draft\readme.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\_erase\readme.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\_init\readme.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\_post\readme.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\_pre\readme.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 

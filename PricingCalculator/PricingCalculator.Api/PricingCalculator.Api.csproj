@@ -16,6 +16,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\PricingCalculator.Application\PricingCalculator.Application.csproj" />
 		<ProjectReference Include="..\PricingCalculator.Infrastructure\PricingCalculator.Infrastructure.csproj" />
+		<ProjectReference Include="..\PricingCalculator.Public\PricingCalculator.Public.csproj" />
 	</ItemGroup>
 
 </Project>

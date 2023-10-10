@@ -31,7 +31,7 @@ public class AddService
 		}
 		public async Task<long> Handle(Request request, CancellationToken cancellationToken)
 		{
-			var service = ServiceModule.Core.Service.Create(request.Name, request.Price, request.Currency);
+			var service = ServiceModule.Core.Service.Create(request.Name, request.Price, request.Currency, request.ValidFromWeekDayNumber, request.ValidToWeekDayNumber);
 			_serviceRepository.Add(service);
 			await _serviceUnitOfWork.SaveChangesAsync(cancellationToken);
 			return service.Id;

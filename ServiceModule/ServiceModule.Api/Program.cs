@@ -52,7 +52,7 @@ public static partial class WebApplicationExtensions
 
     public static void UseMiddlewares(this WebApplication app)
     {
-        app.UseMigrations(app.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null"));
+        app.UseMigrations(app.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null"), "ServiceMigrations");
         
         if (app.Environment.IsDevelopment())
         {

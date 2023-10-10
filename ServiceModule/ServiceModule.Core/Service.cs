@@ -5,14 +5,16 @@ namespace ServiceModule.Core;
 public class Service
 {
 
-    public static Service Create(string name, decimal price, string currency)
+    public static Service Create(string name, decimal price, string currency, int validFromWeekDayNumber, int validToWeekDayNumber)
     {
         return new Service
         {
             Id = IdGenerator.NewId(),
             Name = name,
             Price = price,
-            Currency = currency
+            Currency = currency,
+            ValidFromWeekDayNumber = validFromWeekDayNumber,
+            ValidToWeekDayNumber = validToWeekDayNumber
         };
     }
 

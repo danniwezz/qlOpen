@@ -163,6 +163,9 @@
           "PricingCalculator.Core": "[1.0.0, )"
         }
       },
+      "pricingcalculator.public": {
+        "type": "Project"
+      },
       "servicemodule.public": {
         "type": "Project"
       }
