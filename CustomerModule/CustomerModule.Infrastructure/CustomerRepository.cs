@@ -1,5 +1,4 @@
 ﻿using CustomerModule.Core;
-using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure;
 
 namespace CustomerModule.Infrastructure;

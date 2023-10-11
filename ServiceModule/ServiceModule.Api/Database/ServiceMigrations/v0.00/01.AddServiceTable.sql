@@ -1,13 +1,11 @@
---Remove when in v0.00
-IF OBJECT_ID (N'Service', N'U') IS NOT NULL 
-   DROP TABLE [Service]
-
 CREATE TABLE [Service]
 (
 [Id] BIGINT NOT NULL,
 [Name] NVARCHAR(255),
 [Price] DECIMAL(18,4) NOT NULL,
-[Currency] NVARCHAR(3) NOT NULL
+[Currency] NVARCHAR(3) NOT NULL,
+[ValidToWeekDayNumber] INT NOT NULL,
+[ValidFromWeekDayNumber] INT NOT NULL
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

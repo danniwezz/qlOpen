@@ -1,45 +1,61 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>803f958c-0b10-4c08-816a-29839649889e</UserSecretsId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>803f958c-0b10-4c08-816a-29839649889e</UserSecretsId>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MediatR" Version="12.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Database\Migrations\v0.01\" />
-    <Folder Include="Database\Migrations\_draft\" />
-    <Folder Include="Database\Migrations\_post\" />
-    <Folder Include="Database\Migrations\_pre\" />
-    <Folder Include="Database\Migrations\_erase\" />
-    <Folder Include="Database\Migrations\_init\" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Shared\Shared.FluentValidation\Shared.FluentValidation.csproj" />
+		<ProjectReference Include="..\..\Shared\Shared.Yuniql\Shared.Yuniql.csproj" />
+		<ProjectReference Include="..\CustomerModule.Application\CustomerModule.Application.csproj" />
+		<ProjectReference Include="..\CustomerModule.Infrastructure\CustomerModule.Infrastructure.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Shared.FluentValidation\Shared.FluentValidation.csproj" />
-    <ProjectReference Include="..\..\Shared\Shared.Yuniql\Shared.Yuniql.csproj" />
-    <ProjectReference Include="..\CustomerModule.Application\CustomerModule.Application.csproj" />
-    <ProjectReference Include="..\CustomerModule.Infrastructure\CustomerModule.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Database\Migrations\v0.00\01.AddCustomerTable.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Database\Migrations\v0.00\02.AddAssignedServiceTable.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Database\Migrations\v0.00\03.AddDiscountTable.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Database\CustomerMigrations\v0.00\01.AddCustomerTable.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\v0.00\02.AddAssignedServiceTable.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\v0.00\03.AddDiscountTable.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\v0.01\01.AddUniqueConstraintsCustomer.sql">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\v0.02\01.AddUniqueConstraintsCustomer.sql">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\v0.03\01.AddWeekDaysToAssignedServiceTable.sql">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\_draft\readme.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\_erase\readme.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\_init\readme.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\_post\readme.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\CustomerMigrations\_pre\readme.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

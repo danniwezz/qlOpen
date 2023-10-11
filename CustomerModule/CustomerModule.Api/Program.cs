@@ -7,10 +7,11 @@ using CustomerModule.Application.Customers;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Diagnostics;
 using CustomerModule.Core;
+using System.Reflection;
 
 namespace CustomerModule.Api;
 
-public static partial class Program
+public class Program
 {
     public static void Main(string[] args)
     {
@@ -23,7 +24,11 @@ public static partial class Program
         app.UseMiddlewares();
     }
 
-    private static void AddServices(this WebApplicationBuilder builder)
+}
+
+public static partial class WebApplicationExtensions 
+{
+    public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<CustomerDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null")));
 
@@ -42,9 +47,11 @@ public static partial class Program
 		builder.Services.AddValidatingMediator(typeof(AddCustomer));
     }
 
-    private static void UseMiddlewares(this WebApplication app)
+    public static void UseMiddlewares(this WebApplication app)
     {
-        app.UseMigrations(app.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null"));
+        var assembly = typeof(Program).GetTypeInfo().Assembly;
+        var c = assembly.Location.Replace($"{assembly.GetName().Name}.dll", "");
+        app.UseMigrations(app.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null"), "CustomerMigrations");
         if (app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler(errorApp =>
@@ -53,7 +60,7 @@ public static partial class Program
                 {
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
 
-                    await context.Response.WriteAsJsonAsync(new { contextFeature?.Error.Message });
+                    await context.Response.WriteAsJsonAsync(new { contextFeature?.Error });
                     await context.Response.CompleteAsync();
                 });
             }); 

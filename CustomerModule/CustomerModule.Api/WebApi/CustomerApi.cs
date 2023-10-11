@@ -1,7 +1,10 @@
-﻿using CustomerModule.Application.Customers;
+﻿using CustomerModule.Api.Mappers;
+using CustomerModule.Application.Customers;
 using CustomerModule.Core;
+using CustomerModule.Public;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Shared.Core;
 using Shared.FluentValidation;
 
@@ -16,18 +19,29 @@ public static class CustomerApi
 
 		group.MapPost("", AddCustomer)
 			.WithDescription("Adds a customer");
+		group.MapGet("/{customerId}", GetCustomer);
 	}
 
-	private static async Task<Results<Ok, UnprocessableEntity<IEnumerable<IError>>>> AddCustomer(
+	private static async Task<Results<Ok<long>, UnprocessableEntity<IEnumerable<IError>>>> AddCustomer(
 		IMediator mediator,
-		AddCustomer.Request request, ICustomerRepository customerRepository)
+		[FromBody] AddCustomerRequestDto requestDto,
+		ICustomerRepository customerRepository)
 	{
+		var request = CustomerRequestMapper.FromDto(requestDto);
 		var validationResult = await new AddCustomer.Validator(customerRepository).ValidateAsync(request);
 		if (!validationResult.IsValid)
 		{
 			return TypedResults.UnprocessableEntity(validationResult.ToFailureResult());
 		}
-		await mediator.Send(request);
-		return TypedResults.Ok();
+		var customerId = await mediator.Send(request);
+		return TypedResults.Ok(customerId);
+	}
+
+	private static async Task<Ok<CustomerDto>> GetCustomer(
+		IMediator mediator,
+		[FromRoute] long customerId,
+		ICustomerRepository customerRepository)
+	{
+		return TypedResults.Ok(await mediator.Send(new GetCustomer.Request(customerId)));
 	}
 }

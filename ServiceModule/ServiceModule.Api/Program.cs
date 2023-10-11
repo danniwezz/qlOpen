@@ -10,7 +10,7 @@ using Shared.Yuniql;
 
 namespace ServiceModule.Api;
 
-public static partial class Program
+public class Program
 {
     public static void Main(string[] args)
     {
@@ -25,7 +25,10 @@ public static partial class Program
         app.Run();
     }
 
-    private static void AddServices(this WebApplicationBuilder builder)
+}
+public static partial class WebApplicationExtensions 
+{
+    public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAuthorization();
 
@@ -47,9 +50,9 @@ public static partial class Program
 
     }
 
-    private static void UseMiddlewares(this WebApplication app)
+    public static void UseMiddlewares(this WebApplication app)
     {
-        app.UseMigrations(app.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null"));
+        app.UseMigrations(app.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Default sql connection string is null"), "ServiceMigrations");
         
         if (app.Environment.IsDevelopment())
         {
@@ -75,7 +78,7 @@ public static partial class Program
 
         app.UseAuthorization();
 
-        var apiGroup = app.MapGroup("").WithOpenApi().AddEndpointFilter<VariousExceptionsFilter>();
+        var apiGroup = app.MapGroup("").WithOpenApi();
         apiGroup.RegisterServiceApi();
 
 
