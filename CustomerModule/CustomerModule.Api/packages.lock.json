@@ -95,14 +95,6 @@
         "resolved": "2.0.1",
         "contentHash": "FYv95bNT4UwcNA+G/J1oX5OpRiSUxteXaUt2BJbRSdRNiIUNbggJF69wy6mnk2wYToaanpdXZdCwVylt96MpwQ=="
       },
-      "Microsoft.ApplicationInsights": {
-        "type": "Transitive",
-        "resolved": "2.20.0",
-        "contentHash": "mb+EC5j06Msn5HhKrhrsMAst6JxvYUnphQMGY2cixCabgGAO3q79Y8o/p1Zce1Azgd1IVkRKAMzAV4vDCbXOqA==",
-        "dependencies": {
-          "System.Diagnostics.DiagnosticSource": "5.0.0"
-        }
-      },
       "Microsoft.AspNetCore.Hosting.Abstractions": {
         "type": "Transitive",
         "resolved": "2.2.0",
@@ -403,15 +395,6 @@
         "resolved": "3.0.1",
         "contentHash": "E4UmOQ++eNJax1laE+lws7E3zbhKgHsGJbO7ra0yE5smUh+5FfUPIKKBxM3MO1tK4sgpQke6/pLReDxIc/ggNw=="
       },
-      "Serilog.Sinks.ApplicationInsights": {
-        "type": "Transitive",
-        "resolved": "4.0.0",
-        "contentHash": "AlYq1JFqh+RFKwLKZ3X224Zbe1gnkMbqSELp2FApLN0iMyRPdwwxMJBCCrk49C8qOefBd4zN+J/1Tq3i75DunA==",
-        "dependencies": {
-          "Microsoft.ApplicationInsights": "2.20.0",
-          "Serilog": "2.11.0"
-        }
-      },
       "Swashbuckle.AspNetCore.Swagger": {
         "type": "Transitive",
         "resolved": "6.5.0",
@@ -641,7 +624,6 @@
       "customermodule.infrastructure": {
         "type": "Project",
         "dependencies": {
-          "CustomerModule.Application": "[1.0.0, )",
           "CustomerModule.Core": "[1.0.0, )",
           "Microsoft.EntityFrameworkCore": "[7.0.11, )",
           "Shared.Infrastructure": "[1.0.0, )"
@@ -677,7 +659,6 @@
         "type": "Project",
         "dependencies": {
           "Serilog": "[3.0.1, )",
-          "Serilog.Sinks.ApplicationInsights": "[4.0.0, )",
           "Yuniql.AspNetCore": "[1.2.25, )",
           "Yuniql.SqlServer": "[1.3.15, )"
         }

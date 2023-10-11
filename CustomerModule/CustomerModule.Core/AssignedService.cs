@@ -3,18 +3,6 @@
 namespace CustomerModule.Core;
 public class AssignedService
 {
-
-	public static AssignedService Load(long ServiceId, long serviceId, string serviceName, long customerId)
-	{
-		return new AssignedService
-		{
-			Id = serviceId,
-			ServiceId = serviceId,
-			ServiceName = serviceName,
-			CustomerId = customerId
-		};
-	}
-
 	public static AssignedService Create(long serviceId, string serviceName, long customerId, decimal price, string currency, DateOnly startDate, DateOnly? endDate, int validFromWeekDayNumber, int validToWeekDayNumber)
 	{
 		return new AssignedService
@@ -48,7 +36,7 @@ public class AssignedService
 	public string ServiceName { get; set; } = null!;
 	public long CustomerId { get; set; }
 	public decimal Price { get; set; }
-	public string Currency { get; set; }
+	public string Currency { get; set; } = null!;
 	public DateOnly StartDate { get; set; }
 	public DateOnly? EndDate { get; set; }
 	public int ValidFromWeekDayNumber { get; set; }

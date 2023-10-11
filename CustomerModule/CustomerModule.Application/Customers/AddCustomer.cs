@@ -27,6 +27,7 @@ public class AddCustomer
 				return true;
 
 			}).WithMessage(x => $"ValidFrom must come before ValidTo");
+
 			RuleForEach(x => x.AssignedServices).Must(service =>
 			{
 				foreach (var discount in service.Discounts)
@@ -39,6 +40,7 @@ public class AddCustomer
 				return true;
 
 			}).WithMessage(x => "ValidFrom must have a value, if ValidTo has a value.");
+
 			RuleForEach(x => x.AssignedServices).Must(service =>
 			{
 				if (service.Discounts.Any(x => x.ValidFrom == null && x.ValidTo == null) && service.Discounts.Count > 1)
@@ -48,15 +50,37 @@ public class AddCustomer
 				return true;
 
 			}).WithMessage("If a discount with no startDate or endDate exist, then there should only exist one discount.");
+
 			RuleForEach(x => x.AssignedServices).Must(service =>
 			{
-				//TODO: Does not work as intended
-				foreach (var discount in service.Discounts.Where(x => !(x.ValidFrom == null && x.ValidTo == null) || !(x.ValidFrom != null && x.ValidTo == null)))
+				if (!service.Discounts.Any(x => x.ValidFrom != null && x.ValidTo == null) || (service.Discounts.Any(x => x.ValidFrom != null && x.ValidTo == null) && service.Discounts.Count() == 1))
 				{
-					if (service.Discounts.Count >= 2 && !service.Discounts.Where(x => x != discount).Any(other => (discount.ValidFrom < other.ValidFrom && other.ValidFrom < discount.ValidFrom) //The "other discount"s startDate is contained in the "discount"s period
-					|| (other.ValidFrom < discount.ValidFrom && other.ValidTo > discount.ValidFrom)                         //The "discount"s startDate is contained in the "other discount"s period
-					|| (other.ValidFrom < discount.ValidFrom && discount.ValidTo < other.ValidTo)                               //The "discounts" period is contained in the "other discount"s period
-					|| (discount.ValidFrom < other.ValidFrom && other.ValidTo < discount.ValidTo)                               //The "other discount"s period is contained in the discounts period
+					return true;
+				}
+				else
+				{
+					var discountWithoutEndDate = service.Discounts.Single(x => x.ValidFrom != null && x.ValidTo == null);
+					//The discount without endDate has a startDate within another period. This is not allowed.
+					return !service.Discounts.Where(x => x != discountWithoutEndDate).Any(x => x.ValidFrom < discountWithoutEndDate.ValidFrom && discountWithoutEndDate.ValidFrom < x.ValidTo);
+				}
+
+			}).WithMessage("A discount without endDate cannot start within another period.");
+
+			RuleForEach(x => x.AssignedServices).Must(service =>
+			{
+				//We can not compare discounts that has no end-date or discounts without a period.
+				var discountsToVerify = service.Discounts.Where(x => (x.ValidFrom != null && x.ValidTo != null));
+				//If list of discounts is larger or equal to 2, then we can compare the different periods. Otherwise we will compare the discount with itself.
+				if (discountsToVerify.Count() <= 2)
+				{
+					return true;
+				}
+				foreach (var discount in discountsToVerify)
+				{
+					if (!service.Discounts.Where(x => x != discount).Any(other => (discount.ValidFrom < other.ValidFrom && other.ValidFrom < discount.ValidFrom) //The "other discount"s startDate is contained in the "discount"s period
+					|| (other.ValidFrom < discount.ValidFrom && other.ValidTo > discount.ValidFrom)																 //The "discount"s startDate is contained in the "other discount"s period
+					|| (other.ValidFrom < discount.ValidFrom && discount.ValidTo < other.ValidTo)																 //The "discounts" period is contained in the "other discount"s period
+					|| (discount.ValidFrom < other.ValidFrom && other.ValidTo < discount.ValidTo)																 //The "other discount"s period is contained in the discounts period
 					))
 					{
 						return false;

@@ -12,7 +12,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\ServiceModule\ServiceModule.Application\ServiceModule.Application.csproj" />
+	  <ProjectReference Include="..\..\Shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+	  <ProjectReference Include="..\ServiceModule.Core\ServiceModule.Core.csproj" />
 	</ItemGroup>
 
 </Project>

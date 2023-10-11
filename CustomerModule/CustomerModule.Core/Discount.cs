@@ -1,5 +1,4 @@
 ﻿using Shared.Core;
-using System.Runtime.InteropServices;
 
 namespace CustomerModule.Core;
 public class Discount

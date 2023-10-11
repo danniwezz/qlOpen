@@ -24,7 +24,7 @@ public class Customer
 
 	public void AddAssignedService(AssignedService assignedService)
 	{
-		if (assignedService != null || !AssignedServices.Select(x => x.Id).Contains(assignedService.Id))
+		if (assignedService != null || !AssignedServices.Select(x => x.Id).Contains(assignedService!.Id))
 		{
 			AssignedServices.Add(assignedService);
 			return;

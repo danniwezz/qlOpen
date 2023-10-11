@@ -18,14 +18,14 @@ public class PriceCalculatorService : IPriceCalculatorService
 				var startDate = discount.ValidFrom ?? service.StartDate;
 				var endDate = discount.ValidTo ?? service.EndDate ?? DateOnly.FromDateTime(DateTime.UtcNow);
 				var discountedDaysWithCost = GetDaysWithCost(startDate, calculateUntil.HasValue && calculateUntil.Value < endDate ? calculateUntil.Value : endDate, service.ValidFromWeekDayNumber, service.ValidToWeekDayNumber);
-				return new {Cost = discountedDaysWithCost * service.Price * discount.Percentage, NumberOfDays = discountedDaysWithCost};
-			});
+				return new {Cost = discountedDaysWithCost * service.Price * (1M - discount.Percentage), NumberOfDays = discountedDaysWithCost};
+			}).ToList();
 			var totalDiscountedDaysWithCost = discountCosts.Sum(x => x.NumberOfDays);
 
 			//If the number of days with discount is larger than the total number of days the customer has had the service something is wrong. We shouldn't return is right?
 			if(totalDiscountedDaysWithCost <= daysWithCost)
 			{
-				costPerService.Add(new ServiceCost(service.ServiceName, discountCosts.Sum(x => x.Cost) + ((daysWithCost - totalDiscountedDaysWithCost) * service.Price)));
+				costPerService.Add(new ServiceCost(service.ServiceName, discountCosts.Sum(x => x.Cost) + ((daysWithCost - totalDiscountedDaysWithCost) * service.Price), service.Currency));
 			}
 		}
 		return costPerService;
@@ -45,7 +45,7 @@ public class PriceCalculatorService : IPriceCalculatorService
 	}
 }
 
-public record ServiceCost(string ServiceName, decimal TotalCost);
+public record ServiceCost(string ServiceName, decimal TotalCost, string Currency);
 
 public interface IPriceCalculatorService
 {

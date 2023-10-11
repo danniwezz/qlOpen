@@ -4,18 +4,15 @@ using ServiceModule.Public;
 using System.Net.Http.Json;
 
 namespace PricingCalculator.Infrastructure.ServiceModuleClient;
-public class ServiceModuleClient : IServiceModuleClient
+public partial class ServiceModuleClient : IServiceModuleClient
 {
-	private readonly IOptions<ServiceModuleClientOptions> _serviceModuleClientOptions;
 	private readonly HttpClient _httpClient;
 
 	public ServiceModuleClient(IOptions<ServiceModuleClientOptions> serviceModuleClientOptions) : base()
 	{
-
-		_serviceModuleClientOptions = serviceModuleClientOptions;
 		_httpClient = new HttpClient
 		{
-			BaseAddress = new Uri(_serviceModuleClientOptions.Value.BaseUrl)
+			BaseAddress = new Uri(serviceModuleClientOptions.Value.BaseUrl)
 		};
 	}
 

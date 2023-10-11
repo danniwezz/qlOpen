@@ -16,6 +16,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Shared.FluentValidation\Shared.FluentValidation.csproj" />
 		<ProjectReference Include="..\..\Shared\Shared.Yuniql\Shared.Yuniql.csproj" />
+		<ProjectReference Include="..\ServiceModule.Application\ServiceModule.Application.csproj" />
 		<ProjectReference Include="..\ServiceModule.Infrastructure\ServiceModule.Infrastructure.csproj" />
 		<ProjectReference Include="..\ServiceModule.Public\ServiceModule.Public.csproj" />
 	</ItemGroup>

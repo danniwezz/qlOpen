@@ -14,8 +14,10 @@ public static class ServiceApi
 	{
 		var group = apiGroup.MapGroup("service").WithOpenApi();
 
-		group.MapPost("", AddService);
-		group.MapGet("", GetServices);
+		group.MapPost("", AddService)
+			.WithDescription("Registers a service.");
+		group.MapGet("", GetServices)
+			.WithDescription("Gets all registered services.");
 	}
 
 	private static async Task<Results<Ok<long>, UnprocessableEntity<IEnumerable<IError>>>> AddService(IMediator mediator, AddServiceRequestDto requestDto, IServiceRepository serviceRepository)

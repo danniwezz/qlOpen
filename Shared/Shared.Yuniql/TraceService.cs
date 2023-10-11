@@ -1,10 +1,9 @@
 ﻿using Serilog;
-
 using Yuniql.Extensibility;
 
 namespace Shared.Yuniql
 {
-    public class ConsoleTraceService : ITraceService
+	public class ConsoleTraceService : ITraceService
     {
         public ConsoleTraceService()
         {

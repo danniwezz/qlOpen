@@ -1,9 +1,9 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using PricingCalculator.Api.WebApi;
 using PricingCalculator.Application;
 using PricingCalculator.Core;
 using PricingCalculator.Infrastructure.CustomerModuleClient;
+using PricingCalculator.Infrastructure.ServiceModuleClient;
 
 namespace PricingCalculator.Api;
 
@@ -32,10 +32,16 @@ public static partial class WebApplicationExtensions
             opt.SupportNonNullableReferenceTypes();
             opt.UseAllOfToExtendReferenceSchemas();
         });
+
+        builder.Services.AddOptions<ServiceModuleClientOptions>().Bind(builder.Configuration.GetSection(nameof(ServiceModuleClientOptions))).ValidateDataAnnotations().ValidateOnStart();
+        builder.Services.AddHttpClient<IServiceModuleClient, ServiceModuleClient>();
+        builder.Services.AddScoped<IServiceModuleClient, ServiceModuleClient>();
+
         builder.Services.AddOptions<CustomerModuleClientOptions>().Bind(builder.Configuration.GetSection(nameof(CustomerModuleClientOptions))).ValidateDataAnnotations().ValidateOnStart();
         builder.Services.AddHttpClient<ICustomerModuleClient, CustomerModuleClient>();
-
         builder.Services.AddScoped<ICustomerModuleClient, CustomerModuleClient>();
+
+        
         return builder.Services;
     }
 

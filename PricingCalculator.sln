@@ -47,9 +47,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceModule.Public", "Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PricingCalculator.Application", "PricingCalculator\PricingCalculator.Application\PricingCalculator.Application.csproj", "{60C8E0C9-A477-48BF-BE3A-C11618F602C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.IntegrationTests", "Shared\Shared.IntegrationTests\Shared.IntegrationTests.csproj", "{A2F807D2-AB1B-4769-8078-E57AA5F59672}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PricingCalculator.Public", "PricingCalculator\PricingCalculator.Public\PricingCalculator.Public.csproj", "{B517803C-7955-4816-AB10-8E380F9FBB8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PricingCalculator.Public", "PricingCalculator\PricingCalculator.Public\PricingCalculator.Public.csproj", "{B517803C-7955-4816-AB10-8E380F9FBB8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PricingCalculator.Tests", "PricingCalculator\PricingCalculator.Tests\PricingCalculator.Tests.csproj", "{B50D90FF-DA20-4E06-B2C0-F8F4AAB9DE71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,14 +129,14 @@ Global
 		{60C8E0C9-A477-48BF-BE3A-C11618F602C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60C8E0C9-A477-48BF-BE3A-C11618F602C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60C8E0C9-A477-48BF-BE3A-C11618F602C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2F807D2-AB1B-4769-8078-E57AA5F59672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2F807D2-AB1B-4769-8078-E57AA5F59672}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2F807D2-AB1B-4769-8078-E57AA5F59672}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2F807D2-AB1B-4769-8078-E57AA5F59672}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B517803C-7955-4816-AB10-8E380F9FBB8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B517803C-7955-4816-AB10-8E380F9FBB8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B517803C-7955-4816-AB10-8E380F9FBB8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B517803C-7955-4816-AB10-8E380F9FBB8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B50D90FF-DA20-4E06-B2C0-F8F4AAB9DE71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B50D90FF-DA20-4E06-B2C0-F8F4AAB9DE71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B50D90FF-DA20-4E06-B2C0-F8F4AAB9DE71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B50D90FF-DA20-4E06-B2C0-F8F4AAB9DE71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -160,8 +160,8 @@ Global
 		{DE76459D-C036-476E-9630-8C4125FC6D62} = {DFCA0CFD-05E4-4572-898F-D0E2DB342039}
 		{6CD77515-E02A-4E21-B03C-3E96E2362DF3} = {2CA47F66-ED84-4CA5-A163-592D1FE33D67}
 		{60C8E0C9-A477-48BF-BE3A-C11618F602C7} = {84C456C6-A8BD-4F17-8113-D6A37DC059C6}
-		{A2F807D2-AB1B-4769-8078-E57AA5F59672} = {96684465-9E63-4AD0-B383-6FA5709CA64D}
 		{B517803C-7955-4816-AB10-8E380F9FBB8B} = {84C456C6-A8BD-4F17-8113-D6A37DC059C6}
+		{B50D90FF-DA20-4E06-B2C0-F8F4AAB9DE71} = {84C456C6-A8BD-4F17-8113-D6A37DC059C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BDA565D-AD22-42FB-9F3F-AE30A18B3504}
