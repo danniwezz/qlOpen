@@ -5,9 +5,9 @@ using MediatR;
 namespace CustomerModule.Application.Customers;
 public class GetCustomer
 {
-	public record Request(long CustomerId) : IRequest<CustomerDto>;
+	public record Request(long CustomerId) : IRequest<CustomerDto?>;
 
-	public class Handler : IRequestHandler<Request, CustomerDto>
+	public class Handler : IRequestHandler<Request, CustomerDto?>
 	{
 		private readonly ICustomerRepository _customerRepository;
 
@@ -15,10 +15,10 @@ public class GetCustomer
         {
 			_customerRepository = customerRepository;
 		}
-        public async Task<CustomerDto> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<CustomerDto?> Handle(Request request, CancellationToken cancellationToken)
 		{
-			var customer = await  _customerRepository.SingleAsync(c => c.Id  == request.CustomerId, cancellationToken);
-			return CustomerMapper.ToDto(customer);
+			var customer = await  _customerRepository.SingleOrDefaultAsync(c => c.Id  == request.CustomerId, cancellationToken);
+			return customer != null ? CustomerMapper.ToDto(customer) : null;
 		}
 	}
 }

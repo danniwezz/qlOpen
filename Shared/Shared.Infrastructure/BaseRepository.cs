@@ -19,6 +19,9 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
     public async Task<T> SingleAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken) =>
          await _dbContext.Set<T>().SingleAsync(filter, cancellationToken: cancellationToken);
 
+     public async Task<T?> SingleOrDefaultAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken) =>
+         await _dbContext.Set<T>().SingleOrDefaultAsync(filter, cancellationToken: cancellationToken);
+
     public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken)
         => await _dbContext.Set<T>().FirstOrDefaultAsync(filter, cancellationToken);
 
