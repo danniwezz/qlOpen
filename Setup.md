@@ -53,3 +53,4 @@ The response of the request should show the accumulated price for the customer.
 
 ## Running the test cases
  Test cases 1 and 2 are located under PricingCalculator.Tests and are named the same to avoid confusion.
+ To run the tests, open the test explorer in Visual Studio or run `dotnet test` in the terminal.
