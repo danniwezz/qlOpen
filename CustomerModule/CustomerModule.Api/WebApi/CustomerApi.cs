@@ -37,11 +37,16 @@ public static class CustomerApi
 		return TypedResults.Ok(customerId);
 	}
 
-	private static async Task<Ok<CustomerDto>> GetCustomer(
+	private static async Task<Results<Ok<CustomerDto>, UnprocessableEntity<string>>> GetCustomer(
 		IMediator mediator,
 		[FromRoute] long customerId,
 		ICustomerRepository customerRepository)
 	{
-		return TypedResults.Ok(await mediator.Send(new GetCustomer.Request(customerId)));
+		var result = await mediator.Send(new GetCustomer.Request(customerId));
+		if (result == null)
+		{
+			return TypedResults.UnprocessableEntity($"Could not find customer with Id: {customerId}");
+		}
+		return TypedResults.Ok(result);
 	}
 }

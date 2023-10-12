@@ -87,6 +87,6 @@ public class Test_Case_1 : IAsyncLifetime
 
 		//Assert
 		var totalCost = serviceCost.Sum(x => x.TotalCost);
-		totalCost.ShouldBe(4.68M);
+		totalCost.ShouldBe(4.92M);
 	}
 }

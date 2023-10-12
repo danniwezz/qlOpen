@@ -24,21 +24,25 @@ public static class PriceCalculatorApi
 		[FromQuery] DateOnly? calculateUntilDate)
 	{
 		var customer = await customerModuleClient.GetCustomer(customerId);
+
 		if(customer == null)
 		{
 			return TypedResults.UnprocessableEntity($"Could not find customer with id: {customerId}.");
 		}
 		var services = await serviceModuleClient.GetServices();
+
 		if(services == null)
 		{
 			return TypedResults.UnprocessableEntity($"Could not find get services.");
 		}
+
 		if(!services.Any(service => customer.AssignedServices.Select(x => x.ServiceId).Contains(service.Id)))
 		{
 			return TypedResults.UnprocessableEntity("All supplied assigned services for customer must exist.");
 		}
 
 		var serviceCost = priceCalculatorService.CalculateCustomerCost(customer, calculateUntilDate);
+
 		return TypedResults.Ok(serviceCost.Select(x => new ServiceCostDto(x.ServiceName, x.TotalCost, x.Currency)).ToList());
 	}
 }
